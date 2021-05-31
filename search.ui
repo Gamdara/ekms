@@ -27,28 +27,6 @@
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(145, 190, 170), stop:1 rgb(161, 255, 191));
 }</string>
    </property>
-   <widget class="QPushButton" name="bsearch">
-    <property name="geometry">
-     <rect>
-      <x>760</x>
-      <y>190</y>
-      <width>90</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:rgb(0, 197, 145);
-color: white;
-font: 14pt &quot;MS Shell Dlg 2&quot;;
-border:1px solid black;</string>
-    </property>
-    <property name="text">
-     <string>Search</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
@@ -108,18 +86,13 @@ border-radius:5px;</string>
      </rect>
     </property>
    </widget>
-   <zorder>label_9</zorder>
-   <zorder>bsearch</zorder>
-   <zorder>label</zorder>
-   <zorder>label_2</zorder>
-   <zorder>table</zorder>
   </widget>
   <widget class="QLineEdit" name="tsearch">
    <property name="geometry">
     <rect>
      <x>320</x>
      <y>190</y>
-     <width>440</width>
+     <width>531</width>
      <height>51</height>
     </rect>
    </property>
