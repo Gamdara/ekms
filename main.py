@@ -7,6 +7,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
 import requests
+import json
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
@@ -61,13 +62,16 @@ class LoginScreen(QDialog):
                     widget.setCurrentIndex(widget.currentIndex()+1)
 
                 else:
-                    menuscreen = Menu(json["userId"])
-                    widget.addWidget(menuscreen)
-                    widget.setCurrentIndex(widget.currentIndex()+1)
-                    # menuscreen.getdata()
-                
+                    self.worker = WorkerLogin(json["userId"])
+                    self.worker.start()
+                    self.worker.isdone.connect(self.openmenu)
             else:
                 self.error.setText("Invalid username or password")
+    def openmenu(self,id):
+        menuscreen = Menu(id)
+        widget.addWidget(menuscreen)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
 
 class CreateAccScreen(QDialog):
     def __init__(self):
@@ -102,8 +106,8 @@ class CreateAccScreen(QDialog):
                 self.error.setText("Gagal Membuat Akun!")
 
 class WorkerLogin(QThread):
-    ortu = pyqtSignal(dict)
-    balita = pyqtSignal(dict)
+    # ortu = pyqtSignal(dict)
+    isdone = pyqtSignal(str)
 
     def __init__(self,id):
         super(WorkerLogin, self).__init__()
@@ -112,9 +116,16 @@ class WorkerLogin(QThread):
     def run(self):
         ortujson = requests.get("https://ekms-api.herokuapp.com/ortus/userId/"+self.id).json()[0]
         balitajson = requests.get("https://ekms-api.herokuapp.com/balitas/userId/"+self.id).json()[0]
-        self.ortu.emit(ortujson)
-        self.balita.emit(balitajson)
+        # self.ortu.emit(ortujson)
+        self.isdone.emit(ortujson["userId"])
         print("iyei")
+        data = {
+            "ortu": ortujson,
+            "balita": balitajson
+        }
+        with open('data.json', 'w') as outfile:
+            json.dump(data, outfile)
+        
         
 
 class Menu(QDialog):
@@ -124,14 +135,11 @@ class Menu(QDialog):
         self.id = id
         self.ortu = {}
         self.balita = {}
-        self.worker = WorkerLogin(self.id)
-        self.worker.start()
-        self.worker.ortu.connect(self.setortu)
-        self.worker.balita.connect(self.setbalita)
-        self.profile.setEnabled(False)
-        self.grafik.setEnabled(False)
+        self.getdata()
+        
+        # self.profile.setEnabled(False)
+        # self.grafik.setEnabled(False)
 
-        # self.getdata()
         self.profile.clicked.connect(self.gotoprofile)
         self.imunisasi.clicked.connect(self.gotoimunisasi)
         self.grafik.clicked.connect(self.gotografik)
@@ -140,17 +148,23 @@ class Menu(QDialog):
         self.pimunisasi.setPixmap(QPixmap('imunisasi.png'))
         self.pgrafik.setPixmap(QPixmap('grafik.png'))
 
-    def setortu(self,val):
-        self.ortu = val
-        self.profile.setEnabled(True)
+    # def setortu(self,val):
+    #     self.ortu = val
 
-    def setbalita(self,val):
-        self.balita = val
-        self.grafik.setEnabled(True)
-
+    # def setbalita(self,val):
+    #     self.balita = val
+    # 01101000
+    # 11001101
     def getdata(self):
-        self.ortu = requests.get("https://ekms-api.herokuapp.com/ortus/userId/"+self.id).json()[0]
-        self.balita = requests.get("https://ekms-api.herokuapp.com/balitas/userId/"+self.id).json()[0]
+        with open('data.json') as json_file:
+            data = json.load(json_file)
+            self.ortu = data["ortu"]
+            self.balita = data["balita"]
+            print(data)
+            # self.grafik.setEnabled(True)
+            # self.profile.setEnabled(True)
+        # self.ortu = requests.get("https://ekms-api.herokuapp.com/ortus/userId/"+self.id).json()[0]
+        # self.balita = requests.get("https://ekms-api.herokuapp.com/balitas/userId/"+self.id).json()[0]
 
     def gotoprofile(self):
         profile = Profile(self.ortu,self.balita)
