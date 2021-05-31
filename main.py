@@ -1,15 +1,20 @@
 import sys
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtCore import QAbstractItemModel, QSortFilterProxyModel, QThread, Qt, pyqtSignal
 from PyQt5.uic import loadUi
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QLabel, QWidget
-from PyQt5.QtGui import QPixmap
+from PyQt5 import QtWidgets,uic
+from PyQt5.QtWidgets import QDialog, QApplication, QLabel, QPushButton, QTableWidgetItem, QWidget
+from PyQt5.QtGui import QPixmap, QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import QMessageBox
 
+from datetime import datetime
 import requests
 import json
+
+from pyqtgraph import PlotWidget, plot
+import pyqtgraph as pg
+import matplotlib
+matplotlib.use('Qt5Agg')
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
 class WelcomeScreen(QDialog):
@@ -202,41 +207,41 @@ class Profile(QDialog):
         balikkk = Menu(self.ortu["userId"])
         widget.addWidget(balikkk)
         widget.setCurrentIndex(widget.currentIndex()+1)
-        
+
+class MplCanvas(FigureCanvas):
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        super(MplCanvas, self).__init__(fig)
+
 class Grafik(QDialog):
     def __init__(self,id,balita):
         super(Grafik, self).__init__()
         loadUi("grafik.ui",self)
         self.id = id
         self.balita = balita
-        self.figure = Figure()
-        self.canvas = FigureCanvas(self.figure)
-        self.toolbar = NavigationToolbar(self.canvas, self)
-
+        
         self.grafik()
         self.kembalik.clicked.connect(self.balik2)
 
     def grafik(self):
-        bulan = list(self.balita["berat"].keys())
+        bbulan = list(self.balita["berat"].keys())
         berat = list(self.balita["berat"].values())
-        print(berat)
-        # create an axis
-        ax = self.figure.add_subplot(111)
 
-        # discards the old graph
-        ax.clear()
+        tbulan = list(self.balita["tinggi"].keys())
+        tinggi = list(self.balita["tinggi"].values())
 
-        # plot data
-        ax.plot(berat, '*-')
+        print(self.beratgraph.width(), self.beratgraph.height())
+        sc = MplCanvas(self, width=9, height=2)
+        sc.axes.plot(bbulan, berat,marker='o')
+        sc.axes.set_title("Berat Badan Tahun "+str(datetime.now().year))
+        sc.setParent(self.beratgraph)
 
-        # refresh canvas
-        self.canvas.draw()
-        # plt.plot(bulan, berat, color='red', marker='o')
-        # plt.title('Perkembangan Berat Balita', fontsize=14)
-        # plt.xlabel('Bulan', fontsize=14)
-        # plt.ylabel('Berat', fontsize=14)
-        # plt.grid(True)
-        # plt.show()
+        sb = MplCanvas(self, width=9, height=2)
+        sb.axes.plot(tbulan, tinggi,color='red', marker='o')
+        sb.axes.set_title("Tinggi Badan Tahun "+str(datetime.now().year))
+        sb.setParent(self.tinggigraph)
+        
 
 
     def balik2(self):
@@ -298,9 +303,10 @@ class ProfileBayi(QDialog):
         jenis_kelamin = self.jenis_kelamin.setText(balita["jk"])
 
     def kembaliii(self):
-        kem = Profile(self.ortu, self.balita)
-        widget.addWidget(kem)
-        widget.setCurrentIndex(widget.currentIndex()+1)
+        widget.removeWidget(self)
+        # kem = Profile(self.ortu, self.balita)
+        # widget.addWidget(kem)
+        # widget.setCurrentIndex(widget.currentIndex()+1)
 
 class DaftarImunisasi(QDialog):
     def __init__(self,tipe,id):
@@ -329,6 +335,24 @@ class Search(QDialog):
         super(Search, self).__init__()
         loadUi("search.ui",self)
         tsearch = self.tsearch.text()
+        res = requests.get("https://ekms-api.herokuapp.com/get/balitas")
+        data = res.json()
+        nama = [balita["nama"] for balita in data]
+        print(nama)
+        model = QStandardItemModel(len(nama), 1)
+        model.setHorizontalHeaderLabels(['Nama Balita'])
+
+        for row, company in enumerate(nama):
+            item = QStandardItem(company)
+            model.setItem(row, 0, item)
+    
+        filter_proxy_model = QSortFilterProxyModel()
+        filter_proxy_model.setSourceModel(model)
+        filter_proxy_model.setFilterCaseSensitivity(Qt.CaseInsensitive)
+        filter_proxy_model.setFilterKeyColumn(0)
+        self.tsearch.textChanged.connect(filter_proxy_model.setFilterRegExp)
+        self.table.setModel(filter_proxy_model)
+        
     #     self.bsearch.clicked.connect(self.gotosearch)
 
     # def gotosearch(self):
@@ -422,7 +446,7 @@ class Baru(QDialog):
            print("Berhasil terdaftar")
            print("Email    : "+json["mail"])
            print("Password : "+json["pass"])
-           widget.addWidget(InputDataBalita())
+           widget.addWidget(InputDataBalita(json["userId"]))
            widget.setCurrentIndex(widget.currentIndex()+1)
 
         else:
@@ -431,22 +455,45 @@ class Baru(QDialog):
 
 
 class InputDataBalita(QDialog):
-    def __init__(self):
+    def __init__(self,id):
         super(InputDataBalita, self).__init__()
         loadUi("inputdatabalita.ui",self)
+        self.id = id
         self.daftardatabayi.clicked.connect(self.daftarbayi)
-        # nama_balita = self.nama_balita.text()
-        # umur_balita = self.umur_balita.currentText()
-        # tinggi_badan = self.tinggi_badan.text()
-        # berat_badan = self.berat_badan.text()
-        # nik_balita = self.kenaikan_tinggi_badan.text()
-        # jenis_kelamin = self.jenis_kelamin.text()
-        # tanggal_lahir = self.tanggal_lahir.text()
-        # tanggal_periksa = self.tanggal_periksa.text()
 
     def daftarbayi(self):
-        widget.addWidget(AlertBerhasil())
-        widget.setCurrentIndex(widget.currentIndex()+1)
+        nama_balita = self.nama_balita.text()
+        nik_balita = self.nik_balita.text()
+        umur_balita = str(self.umur_balita.currentText())
+        tinggi_badan = self.tinggi_badan.text()
+        berat_badan = self.berat_badan.text()
+        jenis_kelamin = str(self.jenis_kelamin.currentText())
+        tanggal_lahir = self.tanggal_lahir.text()
+        tanggal_periksa = self.tanggal_periksa.text()
+        currentMonth = datetime.now().strftime("%B")
+        res = requests.post("https://ekms-api.herokuapp.com/balitabaru", json={
+            "nama": nama_balita,
+            "nik" : nik_balita,
+            "umur": umur_balita,
+            "tinggi": {
+                currentMonth : tinggi_badan
+            },
+            "berat": {
+                currentMonth : berat_badan
+            },
+            "tglPeriksa": {
+                currentMonth : tanggal_periksa
+            },
+            "jk": jenis_kelamin,
+            "tglLahir": tanggal_lahir,
+            "userId": self.id
+            
+        })
+        if res:
+            widget.addWidget(AlertBerhasil())
+            widget.setCurrentIndex(widget.currentIndex()+1)
+        else:
+            print("gagal")
 
 class AlertBerhasil(QDialog):
     def __init__(self):

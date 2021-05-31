@@ -211,25 +211,6 @@ border: 1px solid black
      <string>Umur Balita</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="alamat">
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>370</y>
-      <width>280</width>
-      <height>50</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color:rgba(0,0,0,7);
-font: 12pt &quot;MS Shell Dlg 2&quot;;
-padding-left:17px;
-border-radius:1px;
-border: 1px solid black
-
-</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
@@ -518,6 +499,25 @@ border: 1px solid black
      </date>
     </property>
    </widget>
+   <widget class="QLineEdit" name="berat_badan">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>370</y>
+      <width>280</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color:white;
+font: 12pt &quot;MS Shell Dlg 2&quot;;
+padding-left:17px;
+border-radius:1px;
+border: 1px solid black
+
+</string>
+    </property>
+   </widget>
    <zorder>label_9</zorder>
    <zorder>daftardatabayi</zorder>
    <zorder>nama_balita</zorder>
@@ -529,7 +529,6 @@ border: 1px solid black
    <zorder>tinggi_badan</zorder>
    <zorder>label_6</zorder>
    <zorder>label_7</zorder>
-   <zorder>alamat</zorder>
    <zorder>label_8</zorder>
    <zorder>label_10</zorder>
    <zorder>label_11</zorder>
@@ -539,6 +538,7 @@ border: 1px solid black
    <zorder>label_12</zorder>
    <zorder>label_13</zorder>
    <zorder>tanggal_lahir</zorder>
+   <zorder>berat_badan</zorder>
   </widget>
  </widget>
  <resources>
