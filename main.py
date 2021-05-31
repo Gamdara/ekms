@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication, QWidget
+from PyQt5.QtWidgets import QDialog, QApplication, QLabel, QWidget
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMessageBox
 
@@ -47,7 +47,7 @@ class LoginScreen(QDialog):
             self.error.setText("Please input all fields.")
 
         else:
-
+            self.error.setText("Logging in...")
             res = requests.post("https://ekms-api.herokuapp.com/login", data={
                 "email" : user,
                 "password": password
@@ -65,13 +65,13 @@ class LoginScreen(QDialog):
                     self.worker = WorkerLogin(json["userId"])
                     self.worker.start()
                     self.worker.isdone.connect(self.openmenu)
+                
             else:
                 self.error.setText("Invalid username or password")
     def openmenu(self,id):
         menuscreen = Menu(id)
         widget.addWidget(menuscreen)
         widget.setCurrentIndex(widget.currentIndex()+1)
-
 
 class CreateAccScreen(QDialog):
     def __init__(self):
@@ -126,7 +126,6 @@ class WorkerLogin(QThread):
         with open('data.json', 'w') as outfile:
             json.dump(data, outfile)
         
-        
 
 class Menu(QDialog):
     def __init__(self,id):
@@ -137,9 +136,6 @@ class Menu(QDialog):
         self.balita = {}
         self.getdata()
         
-        # self.profile.setEnabled(False)
-        # self.grafik.setEnabled(False)
-
         self.profile.clicked.connect(self.gotoprofile)
         self.imunisasi.clicked.connect(self.gotoimunisasi)
         self.grafik.clicked.connect(self.gotografik)
@@ -148,23 +144,12 @@ class Menu(QDialog):
         self.pimunisasi.setPixmap(QPixmap('imunisasi.png'))
         self.pgrafik.setPixmap(QPixmap('grafik.png'))
 
-    # def setortu(self,val):
-    #     self.ortu = val
-
-    # def setbalita(self,val):
-    #     self.balita = val
-    # 01101000
-    # 11001101
     def getdata(self):
         with open('data.json') as json_file:
             data = json.load(json_file)
             self.ortu = data["ortu"]
             self.balita = data["balita"]
             print(data)
-            # self.grafik.setEnabled(True)
-            # self.profile.setEnabled(True)
-        # self.ortu = requests.get("https://ekms-api.herokuapp.com/ortus/userId/"+self.id).json()[0]
-        # self.balita = requests.get("https://ekms-api.herokuapp.com/balitas/userId/"+self.id).json()[0]
 
     def gotoprofile(self):
         profile = Profile(self.ortu,self.balita)
@@ -182,6 +167,7 @@ class Menu(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
     def gologout(self):
+        print("Log out Success")
         out = LoginScreen()
         widget.addWidget(out)
         widget.setCurrentIndex(widget.currentIndex()+1)
@@ -194,6 +180,7 @@ class Profile(QDialog):
         self.ortu = ortu
         self.profilebayi.clicked.connect(self.gotoprofilebayi)
         self.btnbalik.clicked.connect(self.balikk)
+        
         # kalo mau isi langsung pake setText()
         # ku isi buat test
         t = "test"
@@ -205,7 +192,7 @@ class Profile(QDialog):
         nik_ibu = self.nik_ibu.setText(ortu["ibu"]["nik"])
         alamat = self.alamat.setText(ortu["alamat"])
         telp = self.telp.setText(ortu["telp"])
-
+        
     def gotoprofilebayi(self):
         pbayi = ProfileBayi(self.ortu,self.balita)
         widget.addWidget(pbayi)
@@ -219,6 +206,7 @@ class Profile(QDialog):
 class Grafik(QDialog):
     def __init__(self,id,balita):
         super(Grafik, self).__init__()
+        loadUi("grafik.ui",self)
         self.id = id
         self.balita = balita
         self.figure = Figure()
@@ -226,7 +214,6 @@ class Grafik(QDialog):
         self.toolbar = NavigationToolbar(self.canvas, self)
 
         self.grafik()
-        loadUi("grafik.ui",self)
         self.kembalik.clicked.connect(self.balik2)
 
     def grafik(self):
@@ -250,6 +237,7 @@ class Grafik(QDialog):
         # plt.ylabel('Berat', fontsize=14)
         # plt.grid(True)
         # plt.show()
+
 
     def balik2(self):
         balike = Menu(self.id)
@@ -300,11 +288,10 @@ class ProfileBayi(QDialog):
         self.ortu = ortu
         self.balita = balita
         self.kembalii.clicked.connect(self.kembaliii)
-        # self.pbayi.setPixmap(QPixmap('baby.png'))
+        self.pbayi.setPixmap(QPixmap('baby.png'))
+        self.kembalii.clicked.connect(self.kembaliii)
         # kalo mau isi langsung pake setText()
         # ku isi buat test aja
-        # res = requests.get("https://ekms-api.herokuapp.com/ortus/userId/"+self.id)
-        # json = res.json()[0]
         nama_balita = self.nama_balita.setText(balita["nama"])
         usia_balita = self.usia_balita.setText(str(balita["umur"]))
         tanggal_lahir = self.tanggal_lahir.setText(str(balita["tglLahir"]))
@@ -362,7 +349,7 @@ class CekKMS(QDialog):
         loadUi("cekekms.ui",self)
         self.blama.clicked.connect(self.gotolama)
         self.bbaru.clicked.connect(self.gotobaru)
-        # self.logoutt.clicked.connect(self.gologoutt)
+        self.logoutt.clicked.connect(self.gologoutt)
 
     def gotolama(self):
         lama = Search()
@@ -374,10 +361,10 @@ class CekKMS(QDialog):
         widget.addWidget(baru)
         widget.setCurrentIndex(widget.currentIndex() + 1)   
 
-    # def gologoutt(self):
-    #     outt = LoginScreen()
-    #     widget.addWidget(outt)
-    #     widget.setCurrentIndex(widget.currentIndex()+1)
+    def gologoutt(self):
+        outt = LoginScreen()
+        widget.addWidget(outt)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 
 class DataBulanan(QDialog):
@@ -433,11 +420,9 @@ class Baru(QDialog):
 
         if res:
            print("Berhasil terdaftar")
-           em = "Email    : "+json["mail"]
-           pas = "Password : "+json["pass"]
-           print(em)
-           print(pas)
-           widget.addWidget(AlertBaru(json["mail"],json["pass"]))
+           print("Email    : "+json["mail"])
+           print("Password : "+json["pass"])
+           widget.addWidget(InputDataBalita())
            widget.setCurrentIndex(widget.currentIndex()+1)
 
         else:
@@ -445,6 +430,23 @@ class Baru(QDialog):
             self.error.setText("Gagal Daftar Ulangi Lagi!")
 
 
+class InputDataBalita(QDialog):
+    def __init__(self):
+        super(InputDataBalita, self).__init__()
+        loadUi("inputdatabalita.ui",self)
+        self.daftardatabayi.clicked.connect(self.daftarbayi)
+        # nama_balita = self.nama_balita.text()
+        # umur_balita = self.umur_balita.currentText()
+        # tinggi_badan = self.tinggi_badan.text()
+        # berat_badan = self.berat_badan.text()
+        # nik_balita = self.kenaikan_tinggi_badan.text()
+        # jenis_kelamin = self.jenis_kelamin.text()
+        # tanggal_lahir = self.tanggal_lahir.text()
+        # tanggal_periksa = self.tanggal_periksa.text()
+
+    def daftarbayi(self):
+        widget.addWidget(AlertBerhasil())
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 class AlertBerhasil(QDialog):
     def __init__(self):
@@ -458,12 +460,12 @@ class AlertBerhasil(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class AlertBaru(QDialog):
-    def __init__(self,mail,passw):
+    def __init__(self):
         super(AlertBaru, self).__init__()
         loadUi("alertbaru.ui",self)
         self.btnkembali.clicked.connect(self.backk)
-        self.semail.setText("Email    : "+mail)
-        self.spass.setText("Password : "+passw)
+        self.semail.setText("Email    : ")
+        self.spass.setText("Password : ")
 
     def backk(self):
         widget.addWidget(CekKMS())
@@ -472,8 +474,8 @@ class AlertBaru(QDialog):
 class AlertImun(QDialog):
     def __init__(self,id):
         super(AlertImun, self).__init__()
-        self.id = id
         loadUi("alertimun.ui",self)
+        self.id = id
         self.balikmun.clicked.connect(self.balikimun)
 
     def balikimun(self):
@@ -488,6 +490,7 @@ class AlertImun(QDialog):
 app = QApplication(sys.argv)
 welcome = WelcomeScreen()
 widget = QtWidgets.QStackedWidget()
+# widget = QtWidgets.QStackedWidget()
 widget.addWidget(welcome)
 widget.setFixedHeight(700)
 widget.setFixedWidth(1150)

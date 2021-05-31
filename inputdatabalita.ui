@@ -27,7 +27,7 @@
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(145, 190, 170), stop:1 rgb(161, 255, 191));
 }</string>
    </property>
-   <widget class="QPushButton" name="signup">
+   <widget class="QPushButton" name="daftardatabayi">
     <property name="geometry">
      <rect>
       <x>470</x>
@@ -46,7 +46,7 @@ color: white;
 font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="text">
-     <string>Continue</string>
+     <string>Daftar</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="nama_balita">
@@ -519,7 +519,7 @@ border: 1px solid black
     </property>
    </widget>
    <zorder>label_9</zorder>
-   <zorder>signup</zorder>
+   <zorder>daftardatabayi</zorder>
    <zorder>nama_balita</zorder>
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
