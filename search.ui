@@ -86,6 +86,25 @@ border-radius:5px;</string>
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="bkembali">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>600</y>
+      <width>271</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:10px;
+background-color: rgb(145, 190, 170);
+color: white;
+font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Kembali</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QLineEdit" name="tsearch">
    <property name="geometry">

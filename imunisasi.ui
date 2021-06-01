@@ -294,6 +294,25 @@ background-repeat:none;
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="bkembali">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>650</y>
+      <width>240</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:1px;
+background-color: rgb(145, 190, 170);
+color: white;
+font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Kembali</string>
+    </property>
+   </widget>
    <zorder>label_10</zorder>
    <zorder>label_11</zorder>
    <zorder>label_7</zorder>
@@ -308,6 +327,7 @@ background-repeat:none;
    <zorder>pvarisela</zorder>
    <zorder>phepatitis</zorder>
    <zorder>ppolio</zorder>
+   <zorder>bkembali</zorder>
   </widget>
   <widget class="QPushButton" name="btncampak">
    <property name="geometry">

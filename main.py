@@ -31,7 +31,7 @@ class WelcomeScreen(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
     def gotocreate(self):
-        create = CreateAccScreen()
+        create = Baru(user=True)
         widget.addWidget(create)
         widget.setCurrentIndex(widget.currentIndex() + 1)
 
@@ -264,6 +264,10 @@ class Imunisasi(QDialog):
         self.pvarisela.setPixmap(QPixmap('varisela.png'))
         self.phepatitis.setPixmap(QPixmap('hepatitis.png'))
         self.ppolio.setPixmap(QPixmap('polio.png'))
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def gotocampak(self):
         campak = DaftarImunisasi("campak",self.id)
@@ -315,6 +319,10 @@ class DaftarImunisasi(QDialog):
         self.id = id
         self.tipe = tipe
         self.daftarimun.clicked.connect(self.daftarImunisasi)
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def daftarImunisasi(self):
         tanggal_imunisasi = self.tanggal_imunisasi.text()
@@ -325,6 +333,7 @@ class DaftarImunisasi(QDialog):
             "tanggal" :tanggal_imunisasi
         })
         if res:
+            widget.remo
             widget.addWidget(AlertImun(self.id))
             widget.setCurrentIndex(widget.currentIndex()+1)
         else:
@@ -355,6 +364,10 @@ class Search(QDialog):
         self.tsearch.textChanged.connect(filter_proxy_model.setFilterRegExp)
         self.table.setModel(filter_proxy_model)
         self.func_mappingSignal()
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def func_mappingSignal(self):
         self.table.clicked.connect(self.func_test)
@@ -403,11 +416,15 @@ class DataBulanan(QDialog):
         self.data = data
         print(data)
         self.nama_balita.setText(data["nama"])
-        self.umur_balita.setText(data["umur"])
-        self.tinggi_badan.setText(data["tinggi"][-1])
-        self.berat_badan.setText(data["berat"][-1])
+        self.umur_balita.setText(str(data["umur"]))
+        self.tinggi_badan.setText(str(data["tinggi"][-1]))
+        self.berat_badan.setText(str(data["berat"][-1]))
 
         self.bkonfirmasi.clicked.connect(self.konfirmasibulanan)
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def konfirmasibulanan(self):
         kenaikan_tinggi = self.kenaikan_tinggi_badan.text()
@@ -426,10 +443,15 @@ class DataBulanan(QDialog):
 
 
 class Baru(QDialog):
-    def __init__(self):
+    def __init__(self,user = False):
         super(Baru, self).__init__()
         loadUi("inputdataortu.ui",self)
+        self.user = user
         self.signup.clicked.connect(self.registerortu)
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def registerortu(self):
         nama_ayah = self.nama_ayah.text()
@@ -462,7 +484,7 @@ class Baru(QDialog):
                "mail": json["mail"],
                "pass": json["pass"],
            }
-           widget.addWidget(InputDataBalita(json["userId"],data))
+           widget.addWidget(InputDataBalita(json["userId"],data,self.user))
            widget.setCurrentIndex(widget.currentIndex()+1)
 
         else:
@@ -471,12 +493,17 @@ class Baru(QDialog):
 
 
 class InputDataBalita(QDialog):
-    def __init__(self,id,data):
+    def __init__(self,id,data,user = False):
         super(InputDataBalita, self).__init__()
         loadUi("inputdatabalita.ui",self)
+        self.user = user
         self.data = data
         self.id = id
         self.daftardatabayi.clicked.connect(self.daftarbayi)
+        self.bkembali.clicked.connect(self.kembali)
+
+    def kembali(self):
+        widget.removeWidget(self)
 
     def daftarbayi(self):
         nama_balita = self.nama_balita.text()
@@ -507,7 +534,7 @@ class InputDataBalita(QDialog):
             
         })
         if res:
-            widget.addWidget(AlertBaru(self.data))
+            widget.addWidget(AlertBaru(self.data,self.user))
             widget.setCurrentIndex(widget.currentIndex()+1)
         else:
             print("gagal")
@@ -524,15 +551,20 @@ class AlertBerhasil(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class AlertBaru(QDialog):
-    def __init__(self,data):
+    def __init__(self,data,user = False):
         super(AlertBaru, self).__init__()
         loadUi("alertbaru.ui",self)
+        self.user = user
+        self.data = data
         self.btnkembali.clicked.connect(self.backk)
         self.semail.setText("Email    : "+data["mail"])
         self.spass.setText("Password : "+data["pass"])
 
     def backk(self):
-        widget.addWidget(CekKMS())
+        if self.user == True:
+            widget.addWidget(LoginScreen())
+        else:
+            widget.addWidget(CekKMS())
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class AlertImun(QDialog):

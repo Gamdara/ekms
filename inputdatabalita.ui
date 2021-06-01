@@ -30,7 +30,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
    <widget class="QPushButton" name="daftardatabayi">
     <property name="geometry">
      <rect>
-      <x>470</x>
+      <x>650</x>
       <y>580</y>
       <width>280</width>
       <height>51</height>
@@ -518,6 +518,25 @@ border: 1px solid black
 </string>
     </property>
    </widget>
+   <widget class="QPushButton" name="bkembali">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>580</y>
+      <width>271</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:10px;
+background-color: rgb(145, 190, 170);
+color: white;
+font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Kembali</string>
+    </property>
+   </widget>
    <zorder>label_9</zorder>
    <zorder>daftardatabayi</zorder>
    <zorder>nama_balita</zorder>
@@ -539,6 +558,7 @@ border: 1px solid black
    <zorder>label_13</zorder>
    <zorder>tanggal_lahir</zorder>
    <zorder>berat_badan</zorder>
+   <zorder>bkembali</zorder>
   </widget>
  </widget>
  <resources>

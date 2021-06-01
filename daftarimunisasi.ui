@@ -130,9 +130,9 @@ font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
     <property name="geometry">
      <rect>
       <x>390</x>
-      <y>90</y>
+      <y>100</y>
       <width>441</width>
-      <height>541</height>
+      <height>491</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -196,6 +196,25 @@ padding-left:5px;
 font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="bkembali">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>620</y>
+      <width>240</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:1px;
+background-color: rgb(145, 190, 170);
+color: white;
+font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Kembali</string>
+    </property>
+   </widget>
    <zorder>bgl</zorder>
    <zorder>label_5</zorder>
    <zorder>label</zorder>
@@ -205,6 +224,7 @@ font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
    <zorder>error</zorder>
    <zorder>tanggal_imunisasi</zorder>
    <zorder>jam</zorder>
+   <zorder>bkembali</zorder>
   </widget>
  </widget>
  <resources>
