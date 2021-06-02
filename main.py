@@ -575,7 +575,7 @@ class AlertImun(QDialog):
         super(AlertImun, self).__init__()
         loadUi("alertimun.ui",self)
         self.id = id
-        self.stanggal.setText("Tanggal : "+str(tanggal)+"\nJam : "+str(jam))
+        self.stanggal.setText("\nTanggal : "+str(tanggal)+"\n\nJam : "+str(jam))
         self.balikmun.clicked.connect(self.balikimun)
 
     def balikimun(self):
