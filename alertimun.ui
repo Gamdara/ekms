@@ -95,10 +95,27 @@ border-radius:5px;</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="stanggal">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>300</y>
+      <width>450</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 14pt &quot;MS Shell Dlg 2&quot;;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label_9</zorder>
    <zorder>balikmun</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
+   <zorder>stanggal</zorder>
   </widget>
  </widget>
  <resources>

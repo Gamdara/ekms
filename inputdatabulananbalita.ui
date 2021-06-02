@@ -133,7 +133,7 @@ border: 1px solid black
      <rect>
       <x>280</x>
       <y>260</y>
-      <width>110</width>
+      <width>271</width>
       <height>20</height>
      </rect>
     </property>
@@ -141,7 +141,7 @@ border: 1px solid black
      <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="text">
-     <string>Tinggi Badan (cm)</string>
+     <string>Tinggi Badan Bulan Lalu (cm)</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_7">
@@ -184,7 +184,7 @@ border: 1px solid black
      <rect>
       <x>640</x>
       <y>370</y>
-      <width>150</width>
+      <width>281</width>
       <height>20</height>
      </rect>
     </property>
@@ -192,7 +192,7 @@ border: 1px solid black
      <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="text">
-     <string>Kenaikan Berat Badan (kg)</string>
+     <string>Berat Badan Bulan Ini (kg)</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
@@ -271,7 +271,7 @@ border: 1px solid black
      <rect>
       <x>280</x>
       <y>370</y>
-      <width>100</width>
+      <width>281</width>
       <height>20</height>
      </rect>
     </property>
@@ -279,7 +279,7 @@ border: 1px solid black
      <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="text">
-     <string>Berat Badan (kg)</string>
+     <string>Berat Badan Bulan Lalu (kg)</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_13">
@@ -287,7 +287,7 @@ border: 1px solid black
      <rect>
       <x>640</x>
       <y>260</y>
-      <width>160</width>
+      <width>261</width>
       <height>20</height>
      </rect>
     </property>
@@ -295,7 +295,7 @@ border: 1px solid black
      <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
     </property>
     <property name="text">
-     <string>Kenaikan Tinggi Badan (cm)</string>
+     <string>Tinggi Badan Bulan Ini (cm)</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="berat_badan">

@@ -234,12 +234,12 @@ class Grafik(QDialog):
         print(self.beratgraph.width(), self.beratgraph.height())
         sc = MplCanvas(self, width=9, height=2)
         sc.axes.plot(bbulan, berat,marker='o')
-        sc.axes.set_title("Berat Badan Bulan "+datetime.now().strftime("%B"))
+        sc.axes.set_title("Berat Badan Tahun "+str(datetime.now().year))
         sc.setParent(self.beratgraph)
 
         sb = MplCanvas(self, width=9, height=2)
         sb.axes.plot(tbulan, tinggi,color='red', marker='o')
-        sb.axes.set_title("Tinggi Badan Bulan "+datetime.now().strftime("%B"))
+        sb.axes.set_title("Tinggi Badan Tahun "+str(datetime.now().year))
         sb.setParent(self.tinggigraph)
         
 
@@ -333,8 +333,7 @@ class DaftarImunisasi(QDialog):
             "tanggal" :tanggal_imunisasi
         })
         if res:
-            widget.remo
-            widget.addWidget(AlertImun(self.id))
+            widget.addWidget(AlertImun(self.id,tanggal_imunisasi,jam))
             widget.setCurrentIndex(widget.currentIndex()+1)
         else:
             print("Gagal")
@@ -414,7 +413,11 @@ class DataBulanan(QDialog):
         super(DataBulanan, self).__init__()
         loadUi("inputdatabulananbalita.ui",self)
         self.data = data
-        print(data)
+        
+        self.nama_balita.setEnabled(False)
+        self.umur_balita.setEnabled(False)
+        self.tinggi_badan.setEnabled(False)
+        self.berat_badan.setEnabled(False)
         self.nama_balita.setText(data["nama"])
         self.umur_balita.setText(str(data["umur"]))
         self.tinggi_badan.setText(str(data["tinggi"][-1]))
@@ -568,10 +571,11 @@ class AlertBaru(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 class AlertImun(QDialog):
-    def __init__(self,id):
+    def __init__(self,id,tanggal,jam):
         super(AlertImun, self).__init__()
         loadUi("alertimun.ui",self)
         self.id = id
+        self.stanggal.setText("Tanggal : "+str(tanggal)+"\nJam : "+str(jam))
         self.balikmun.clicked.connect(self.balikimun)
 
     def balikimun(self):
