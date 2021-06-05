@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtCore import QAbstractItemModel, QSortFilterProxyModel, QThread, Qt, pyqtSignal
 from PyQt5.uic import loadUi
-from PyQt5 import QtWidgets,uic
+from PyQt5 import QtWidgets,uic,QtGui
 from PyQt5.QtWidgets import QDialog, QApplication, QLabel, QPushButton, QTableWidgetItem, QWidget
 from PyQt5.QtGui import QPixmap, QStandardItem, QStandardItemModel
 from PyQt5.QtWidgets import QMessageBox
@@ -298,9 +298,15 @@ class ProfileBayi(QDialog):
         self.balita = balita
         self.kembalii.clicked.connect(self.kembaliii)
         self.pbayi.setPixmap(QPixmap('baby.png'))
+        self.pboy.setPixmap(QPixmap('bboy.png'))
+        
         self.kembalii.clicked.connect(self.kembaliii)
         # kalo mau isi langsung pake setText()
         # ku isi buat test aja
+        if(balita["jk"] == "Laki-laki"):
+            self.pbayi.hide()
+        else:
+            self.pboy.hide()
         nama_balita = self.nama_balita.setText(balita["nama"])
         usia_balita = self.usia_balita.setText(str(balita["umur"]))
         tanggal_lahir = self.tanggal_lahir.setText(str(balita["tglLahir"]))
@@ -590,10 +596,12 @@ class AlertImun(QDialog):
 app = QApplication(sys.argv)
 welcome = WelcomeScreen()
 widget = QtWidgets.QStackedWidget()
+widget.setWindowTitle("E-KMS")
+widget.setWindowIcon(QtGui.QIcon("logo.png"))
 # widget = QtWidgets.QStackedWidget()
 widget.addWidget(welcome)
-widget.setFixedHeight(700)
-widget.setFixedWidth(1150)
+widget.setFixedHeight(800)
+widget.setFixedWidth(1200)
 widget.show()
 try:
     sys.exit(app.exec_())

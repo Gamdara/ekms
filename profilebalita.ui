@@ -197,6 +197,24 @@ background-repeat:none;
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="pboy">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>110</y>
+      <width>120</width>
+      <height>110</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image:url(:/newPrefix/bboy.png);
+background-repeat:none;
+background-size:cover;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>label_9</zorder>
    <zorder>error</zorder>
    <zorder>label_11</zorder>
@@ -206,6 +224,7 @@ background-repeat:none;
    <zorder>label_14</zorder>
    <zorder>label_16</zorder>
    <zorder>pbayi</zorder>
+   <zorder>pboy</zorder>
   </widget>
   <widget class="QLabel" name="nama_balita">
    <property name="geometry">

@@ -1,10 +1,10 @@
 <RCC>
   <qresource prefix="newPrefix">
     <file>grafik.png</file>
+    <file>bboy.png</file>
     <file>campak.png</file>
     <file>imunisasi.png</file>
     <file>hepatitis.png</file>
-    <file>namadatabase.db</file>
     <file>polio.png</file>
     <file>varisela.png</file>
     <file>logo.png</file>
